@@ -124,6 +124,19 @@ public class CompanyService {
                 .orElseThrow(() -> new ResourceNotFoundException("Company not found: " + slug));
     }
 
+    /**
+     * Resolves an active company by id. The profile endpoint deliberately carries only the editable
+     * "My Company" fields and no name, so a caller holding an id (wos-payroll rendering a payslip
+     * header) had no way to learn what the company is called.
+     */
+    @Transactional(readOnly = true)
+    public CompanyInfo findById(Long id) {
+        return companyRepository.findById(id)
+                .filter(Company::isActive)
+                .map(this::toInfo)
+                .orElseThrow(() -> new ResourceNotFoundException("Company not found: " + id));
+    }
+
     // ── Company profile (the "My Company" details) ──────────────────────────────
 
     @Transactional(readOnly = true)

@@ -30,6 +30,12 @@ public class CompanyProfileController {
         return ResponseEntity.ok(companyService.findBySlug(slug));
     }
 
+    /** Id/name/slug by id — the counterpart of {@link #bySlug}, for callers that hold an id. */
+    @GetMapping("/{id}")
+    public ResponseEntity<CompanyInfo> byId(@PathVariable Long id) {
+        return ResponseEntity.ok(companyService.findById(id));
+    }
+
     @GetMapping("/{id}/profile")
     public ResponseEntity<CompanyProfileDto> get(@PathVariable Long id) {
         return ResponseEntity.ok(companyService.getProfile(id));

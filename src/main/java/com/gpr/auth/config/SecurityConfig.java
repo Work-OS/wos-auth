@@ -57,6 +57,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/users/*/companies/*").permitAll()
                         .requestMatchers("/companies/*/profile").permitAll()
                         .requestMatchers(HttpMethod.GET, "/companies/by-slug/*").permitAll()
+                        // Id/name/slug, same public shape as by-slug. Service-to-service callers
+                        // (wos-payroll rendering a payslip header) hold an id, not a slug.
+                        .requestMatchers(HttpMethod.GET, "/companies/*").permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex
